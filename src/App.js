@@ -25,11 +25,12 @@ function App() {
   const [condicao2, setCondicao2] = useState(false)
   const [condicao3, setCondicao3] = useState(false)
   const [condicao4, setCondicao4] = useState(false)
-
+  const [letOpen, setOpen] = useState(false)
 
 
   useEffect(() => {
-    ComecarAn()
+    // ComecarAn()
+    digitacao2()
     scrollmenu()
   }, [])
 
@@ -49,63 +50,118 @@ function App() {
     });
 
   }
-  function ComecarAn() {
-    var TxtType = function (el, toRotate, period) {
-      this.toRotate = toRotate;
-      this.el = el;
-      this.loopNum = 0;
-      this.period = parseInt(period, 10) || 2000;
-      this.txt = '';
-      this.tick();
-      this.isDeleting = false;
+  // function ComecarAn() {
+  //   class TxtType {
+  //     constructor(el, toRotate, period) {
+  //       this.toRotate = toRotate
+  //       this.el = el
+  //       this.loopNum = 0
+  //       this.period = parseInt(period, 10) || 2000
+  //       this.txt = ''
+  //       this.tick()
+  //       this.isDeleting = false
+  //     }
+  //     tick() {
+  //       const i = this.loopNum % this.toRotate.length
+  //       const fullTxt = this.toRotate[i]
+
+  //       if (this.isDeleting) {
+  //         this.txt = fullTxt.substring(0, this.txt.length - 1)
+  //       } else {
+  //         this.txt = fullTxt.substring(0, this.txt.length + 1)
+  //       }
+
+  //       this.el.innerHTML = '<span className="wrap">' + this.txt + '</span>'
+
+  //       const that = this
+  //       let delta = 200 - Math.random() * 100
+
+  //       if (this.isDeleting) { delta /= 2 }
+
+  //       if (!this.isDeleting && this.txt === fullTxt) {
+  //         delta = this.period
+  //         this.isDeleting = true
+  //       } else if (this.isDeleting && this.txt === '') {
+  //         this.isDeleting = false
+  //         this.loopNum++
+  //         delta = 500
+  //       }
+
+  //       setTimeout(function () {
+  //         that.tick()
+  //       }, delta)
+  //     }
+  //   }
+
+
+  //   window.onload = function () {
+
+  //     var elements = document.getElementsByClassName('typewrite');
+  //     for (var i = 0; i < elements.length; i++) {
+  //       const toRotate = elements[i].getAttribute('data-type');
+  //       const period = elements[i].getAttribute('data-period');
+  //       if (toRotate) {
+  //         new TxtType(elements[i], JSON.parse(toRotate), period);
+  //       }
+  //     }
+
+  //     const css = document.createElement("style");
+  //     // css.type = "text/css";
+  //     css.innerHTML = ".typewrite > .wrap { border-right: 0.08em solid #fff}";
+  //     document.body.appendChild(css);
+
+
+  //   };
+
+  // }
+  function digitacao2() {
+
+    const typedTextSpan = document.querySelector(".typed-text");
+    const cursorSpan = document.querySelector(".cursor");
+
+    const textArray = ["VISITANTE.", "CURIOSO.", "AMIGO."];
+    const typingDelay = 150;
+    const erasingDelay = 150;
+    const newTextDelay = 1500; // Delay between current and next text
+    let textArrayIndex = 0;
+    let charIndex = 0;
+
+    function type() {
+      if (charIndex < textArray[textArrayIndex].length) {
+        if (!cursorSpan.classList.contains("typing")) cursorSpan.classList.add("typing");
+        typedTextSpan.textContent += textArray[textArrayIndex].charAt(charIndex);
+        charIndex++;
+        setTimeout(type, typingDelay);
+      }
+      else {
+        cursorSpan.classList.remove("typing");
+        setTimeout(erase, newTextDelay);
+      }
+    }
+
+    function erase() {
+      if (charIndex > 0) {
+        if (!cursorSpan.classList.contains("typing")) cursorSpan.classList.add("typing");
+        typedTextSpan.textContent = textArray[textArrayIndex].substring(0, charIndex - 1);
+        charIndex--;
+        setTimeout(erase, erasingDelay);
+      }
+      else {
+        cursorSpan.classList.remove("typing");
+        textArrayIndex++;
+        if (textArrayIndex >= textArray.length) textArrayIndex = 0;
+        setTimeout(type, typingDelay + 1100);
+      }
+    }
+
+    window.onload = function () { // 
+      if (textArray.length){
+        setTimeout(type, newTextDelay + 250);
+
+      }
+      // console.log('ok')
     };
 
-    TxtType.prototype.tick = function () {
-      var i = this.loopNum % this.toRotate.length;
-      var fullTxt = this.toRotate[i];
-
-      if (this.isDeleting) {
-        this.txt = fullTxt.substring(0, this.txt.length - 1);
-      } else {
-        this.txt = fullTxt.substring(0, this.txt.length + 1);
-      }
-
-      this.el.innerHTML = '<span className="wrap">' + this.txt + '</span>';
-
-      var that = this;
-      var delta = 200 - Math.random() * 100;
-
-      if (this.isDeleting) { delta /= 2; }
-
-      if (!this.isDeleting && this.txt === fullTxt) {
-        delta = this.period;
-        this.isDeleting = true;
-      } else if (this.isDeleting && this.txt === '') {
-        this.isDeleting = false;
-        this.loopNum++;
-        delta = 500;
-      }
-
-      setTimeout(function () {
-        that.tick();
-      }, delta);
-    };
-
-    window.onload = function () {
-      var elements = document.getElementsByClassName('typewrite');
-      for (var i = 0; i < elements.length; i++) {
-        var toRotate = elements[i].getAttribute('data-type');
-        var period = elements[i].getAttribute('data-period');
-        if (toRotate) {
-          new TxtType(elements[i], JSON.parse(toRotate), period);
-        }
-      }
-
-      var css = document.createElement("style");
-      css.type = "text/css";
-      css.innerHTML = ".typewrite > .wrap { border-right: 0.08em solid #fff}";
-      document.body.appendChild(css);
-    };
   }
   useEffect(() => {
     const emailis = document.querySelector('.emailinput')
@@ -156,38 +212,78 @@ function App() {
     e.preventDefault()
   }
 
+  useEffect(() => {
+  }, [letOpen])
+  function submitar() {
+    const menuBtn = document.querySelector('.menu-btn');
+    const header = document.querySelector('.header')
+    if (!letOpen) {
+      menuBtn.classList.add('open');
+      header.classList.add('aumento')
+      setOpen(true);
+    } else {
+      menuBtn.classList.remove('open');
+      header.classList.remove('aumento')
+
+      setOpen(false);
+    }
+
+  }
+
 
   return (
     <>
       <div className="maincontainer">
         <header className='header darker'>
           <div className='headerwidth'>
-            <div className='divlogoc'>
-              <div className='containerlogo'>
-                <img src={logo} className='imagemlogo' alt='' />
+            <div className='desktopm'>
+              <div className='divlogoc'>
+                <div className='containerlogo'>
+                  <img src={logo} className='imagemlogo' alt='' />
+                </div>
+              </div>
+              <div className='divhlists'>
+                <ul className='ulli'>
+                  <li><Link smooth={true} to='#projetos'>PROJETOS</Link></li>
+                  <li><Link smooth={true} to='#skills'>SOBRE</Link> </li>
+                  <li><Link smooth={true} to='#contato'>CONTATO</Link> </li>
+
+                </ul>
+                <div className='hamburguerdiv'>
+                  <div className="menu-btn" onClick={submitar}>
+                    <div className="menu-btn__burger"></div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className='divhlists'>
+
+            <div className='menumobiledev'>
               <ul>
                 <li><Link smooth={true} to='#projetos'>PROJETOS</Link></li>
-                <li><Link smooth={true} to='#skills'>SOBRE</Link> </li>
+                <li><Link smooth={true} to='#skills'>SOBRE</Link></li>
                 <li><Link smooth={true} to='#contato'>CONTATO</Link> </li>
 
               </ul>
             </div>
+
           </div>
 
-
         </header>
+
+
+
+
         <div className='mainflexc'>
-          <h1>OLÁ, <span href="" className="typewrite" data-period="2000" data-type='[ "VISITANTE.", "CURIOSO.", "AMIGO." ]'>
-            <span className="wrap"></span>
-          </span>
-          </h1>
+          <div className="container">
+
+            <h1>OLÁ, <span className='typed-text'></span> <span className='cursor'>&nbsp;</span>
+            </h1>
+          </div>
+
           <span className='spanmainflex'>Me chamo <span className='spanmaked'>Samyr Marjoub</span>, seja bem vindo(a) ao meu portofolio!</span>
-          <div className='groupdivb'>
-            <button className="button-74"> <Link to={'#projetos'} smooth={true}>Ver projetos!</Link> </button>
-            <button className="button-74">Tente a sorte!</button>
+          <div className='groupdivb' >
+            <Link to={'#projetos'} smooth={true}>  <button className="button-74"> Ver projetos! </button></Link>
+            <button className="button-74" style={{ marginRight: '0px' }}>Tente a sorte!</button>
 
 
           </div>
@@ -196,14 +292,14 @@ function App() {
 
       <div className='secondcontainer' id='projetos'>
         <div className='secc'>
-          <div><h1>PROJETOS E FUTURAS IDEIAS</h1></div>
+          <div className='divprjtsf'><h1>PROJETOS E FUTURAS IDEIAS</h1></div>
           <div className='fullsec'>
             <div className='fulsec1'>
-              <div className='pointdivsab'>
+              <div className='pointdivsab firstpointdivsap'>
                 <img src={qt6} alt='' />
               </div>
-              <div className='filterdiv'>
-                <label for="check">
+              <div className='filterdiv firstfilterdiv'>
+                <label htmlFor="check">
                   <input type="checkbox" id="check" />
                   <span></span>
                   <span></span>
@@ -211,6 +307,17 @@ function App() {
                 </label>
               </div>
               <div className='gamcontainer'>
+                <div className='pointdivsab secondpointdivsab'>
+                  <img src={qt6} alt='' />
+                </div>
+                <div className='filterdiv secondfilterdiv'>
+                  <label htmlFor="check">
+                    <input type="checkbox" id="check" />
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </label>
+                </div>
                 <div className='divgamct'>
                   <h3>Bem vindo visitante!</h3>
                   <span>Aqui esta algum dos meus projetos</span>
@@ -297,7 +404,7 @@ function App() {
                     </div>
                     <div className='columnf3'>
                       <div className='statusdiv blue'>
-                        <span className='spanblue'>Em progresso</span>
+                        <span className='spanblue'>Em curso</span>
                       </div>
                     </div>
 
@@ -316,7 +423,7 @@ function App() {
                     </div>
                     <div className='columnf3'>
                       <div className='statusdiv blue'>
-                        <span className='spanblue'>Em progresso</span>
+                        <span className='spanblue'>Em curso</span>
                       </div>
                     </div>
 
@@ -335,7 +442,7 @@ function App() {
                     </div>
                     <div className='columnf3'>
                       <div className='statusdiv blue'>
-                        <span className='spanblue'>Em progresso</span>
+                        <span className='spanblue'>Em curso</span>
                       </div>
                     </div>
                   </div>
@@ -348,7 +455,7 @@ function App() {
 
                     </div>
                     <div className='columnf2'>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                      <p>Lorem ipsum dolor sit amet,consectetur.</p>
 
                     </div>
                     <div className='columnf3'>
@@ -365,7 +472,7 @@ function App() {
 
                     </div>
                     <div className='columnf2'>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
+                      <p>Lorem ipsum dolor sit amet, consectetur. </p>
 
                     </div>
                     <div className='columnf3'>
@@ -390,7 +497,7 @@ function App() {
 
                     </div>
                     <div className='columnf2'>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
+                      <p>Lorem ipsum dolor sit amet, elit. </p>
 
                     </div>
                     <div className='columnf3'>
@@ -407,7 +514,7 @@ function App() {
 
                     </div>
                     <div className='columnf2'>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
+                      <p>Lorem ipsum dolor sit amet,elit. </p>
 
                     </div>
                     <div className='columnf3'>
@@ -424,7 +531,7 @@ function App() {
 
                     </div>
                     <div className='columnf2'>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
+                      <p>Lorem ipsum dolor sit amet,elit. </p>
 
                     </div>
                     <div className='columnf3'>
@@ -533,7 +640,7 @@ function App() {
           <div className='containerformf'>
             <form className='msgform' onSubmit={submitado}>
               <div className='tworowsform'>
-                <input required type={'text'} className='nomeinput' maxLength={30} minLength={3} onInput={() => { setCondicao2(true) }} onChange={(e) => { setNomei(e.target.value) }} placeholder='Nome' style={{ marginRight: '50px' }} />
+                <input required type={'text'} className='nomeinput marginrito' maxLength={30} minLength={3} onInput={() => { setCondicao2(true) }} onChange={(e) => { setNomei(e.target.value) }} placeholder='Nome' />
                 <input required type={'email'} className='emailinput' onInput={() => { setCondicao(true) }} onChange={(e) => { setEmaili(e.target.value) }} placeholder='Email' />
               </div>
               <div className='onerowform'>
@@ -556,9 +663,9 @@ function App() {
               <h4>@Samyr Marjoub - 2022</h4>
             </div>
             <div className='footer2'>
-              <div className='quadradocontainer'> <img src={linkedin} alt=''/> </div>
-              <div className='quadradocontainer'> <img src={facebook} alt=''/></div>
-              <div className='quadradocontainer quadradocontainerl'> <img src={github} alt=''/></div>
+              <div className='quadradocontainer'> <img src={linkedin} alt='' /> </div>
+              <div className='quadradocontainer'> <img src={facebook} alt='' /></div>
+              <div className='quadradocontainer quadradocontainerl'> <img src={github} alt='' /></div>
 
             </div>
           </div>
