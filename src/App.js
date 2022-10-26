@@ -14,8 +14,11 @@ import linkedin from './images/linkedin-svg.svg'
 import facebook from './images/icon-facebook.svg'
 import github from './images/icon-github.svg'
 import { HashLink as Link } from 'react-router-hash-link'
+import { Link as Linka } from 'react-router-dom'
 
-function App() {
+
+
+const App = () => {
 
   const [emaili, setEmaili] = useState('')
   const [nomei, setNomei] = useState('')
@@ -29,7 +32,7 @@ function App() {
 
 
   useEffect(() => {
-    // ComecarAn()
+    console.log('ok')
     digitacao2()
     scrollmenu()
   }, [])
@@ -50,75 +53,11 @@ function App() {
     });
 
   }
-  // function ComecarAn() {
-  //   class TxtType {
-  //     constructor(el, toRotate, period) {
-  //       this.toRotate = toRotate
-  //       this.el = el
-  //       this.loopNum = 0
-  //       this.period = parseInt(period, 10) || 2000
-  //       this.txt = ''
-  //       this.tick()
-  //       this.isDeleting = false
-  //     }
-  //     tick() {
-  //       const i = this.loopNum % this.toRotate.length
-  //       const fullTxt = this.toRotate[i]
 
-  //       if (this.isDeleting) {
-  //         this.txt = fullTxt.substring(0, this.txt.length - 1)
-  //       } else {
-  //         this.txt = fullTxt.substring(0, this.txt.length + 1)
-  //       }
-
-  //       this.el.innerHTML = '<span className="wrap">' + this.txt + '</span>'
-
-  //       const that = this
-  //       let delta = 200 - Math.random() * 100
-
-  //       if (this.isDeleting) { delta /= 2 }
-
-  //       if (!this.isDeleting && this.txt === fullTxt) {
-  //         delta = this.period
-  //         this.isDeleting = true
-  //       } else if (this.isDeleting && this.txt === '') {
-  //         this.isDeleting = false
-  //         this.loopNum++
-  //         delta = 500
-  //       }
-
-  //       setTimeout(function () {
-  //         that.tick()
-  //       }, delta)
-  //     }
-  //   }
-
-
-  //   window.onload = function () {
-
-  //     var elements = document.getElementsByClassName('typewrite');
-  //     for (var i = 0; i < elements.length; i++) {
-  //       const toRotate = elements[i].getAttribute('data-type');
-  //       const period = elements[i].getAttribute('data-period');
-  //       if (toRotate) {
-  //         new TxtType(elements[i], JSON.parse(toRotate), period);
-  //       }
-  //     }
-
-  //     const css = document.createElement("style");
-  //     // css.type = "text/css";
-  //     css.innerHTML = ".typewrite > .wrap { border-right: 0.08em solid #fff}";
-  //     document.body.appendChild(css);
-
-
-  //   };
-
-  // }
   function digitacao2() {
 
     const typedTextSpan = document.querySelector(".typed-text");
     const cursorSpan = document.querySelector(".cursor");
-
     const textArray = ["VISITANTE.", "CURIOSO.", "AMIGO."];
     const typingDelay = 150;
     const erasingDelay = 150;
@@ -153,14 +92,10 @@ function App() {
         setTimeout(type, typingDelay + 1100);
       }
     }
+    if (textArray.length) {
+      setTimeout(type, newTextDelay + 250);
 
-    window.onload = function () { // 
-      if (textArray.length){
-        setTimeout(type, newTextDelay + 250);
-
-      }
-      // console.log('ok')
-    };
+    }
 
   }
   useEffect(() => {
@@ -243,7 +178,7 @@ function App() {
                 </div>
               </div>
               <div className='divhlists'>
-                <ul className='ulli'>
+                <ul className='ulli unstyled-list'>
                   <li><Link smooth={true} to='#projetos'>PROJETOS</Link></li>
                   <li><Link smooth={true} to='#skills'>SOBRE</Link> </li>
                   <li><Link smooth={true} to='#contato'>CONTATO</Link> </li>
@@ -258,7 +193,7 @@ function App() {
             </div>
 
             <div className='menumobiledev'>
-              <ul>
+              <ul className='unstyled-list'>
                 <li><Link smooth={true} to='#projetos'>PROJETOS</Link></li>
                 <li><Link smooth={true} to='#skills'>SOBRE</Link></li>
                 <li><Link smooth={true} to='#contato'>CONTATO</Link> </li>
@@ -291,15 +226,18 @@ function App() {
       </div>
 
       <div className='secondcontainer' id='projetos'>
+
+
         <div className='secc'>
           <div className='divprjtsf'><h1>PROJETOS E FUTURAS IDEIAS</h1></div>
           <div className='fullsec'>
+
             <div className='fulsec1'>
               <div className='pointdivsab firstpointdivsap'>
                 <img src={qt6} alt='' />
               </div>
               <div className='filterdiv firstfilterdiv'>
-                <label htmlFor="check">
+                <label for="check">
                   <input type="checkbox" id="check" />
                   <span></span>
                   <span></span>
@@ -311,8 +249,8 @@ function App() {
                   <img src={qt6} alt='' />
                 </div>
                 <div className='filterdiv secondfilterdiv'>
-                  <label htmlFor="check">
-                    <input type="checkbox" id="check" />
+                  <label for="check2">
+                    <input type="checkbox" id="check2" />
                     <span></span>
                     <span></span>
                     <span></span>
@@ -332,26 +270,36 @@ function App() {
 
                   </div>
                   <div className='gridprojects'>
-                    <div className='grid1 grid'>
-                      <span className='insidegrid'>GH</span>
-                      <span className='foragrid'>Green house</span>
-                    </div>
-                    <div className='grid grid2'>
-                      <span className='insidegrid'>CP</span>
-                      <span className='foragrid'>Cyber Punk</span>
-                    </div>
-                    <div className='grid grid3'>
-                      <span className='insidegrid'>EC</span>
-                      <span className='foragrid'>Easy Crypto</span>
-                    </div>
-                    <div className='grid grid4'>
-                      <span className='insidegrid'>TA</span>
-                      <span className='foragrid'>Travel App</span>
-                    </div>
-                    <div className='grid grid5'>
-                      <span className='insidegrid'>LP</span>
-                      <span className='foragrid'>Landing Page</span>
-                    </div>
+                    <Linka to={'/gerenciadorfinancas'}>
+                      <div className='grid1 grid'>
+                        <span className='insidegrid'>GF</span>
+                        <span className='foragrid'>Gerenciador Financeiro</span>
+                      </div>
+                    </Linka>
+                    <Linka to={'/gerenciadornotas'}>
+                      <div className='grid grid2'>
+                        <span className='insidegrid'>GN</span>
+                        <span className='foragrid'>Gerenciador de Notas</span>
+                      </div>
+                    </Linka>
+                    <Linka to={'/genshinpage'}>
+                      <div className='grid grid3'>
+                        <span className='insidegrid'>GI</span>
+                        <span className='foragrid'>Genshin Impact</span>
+                      </div>
+                    </Linka>
+                    <Linka to={'/fallguyspage'}>
+                      <div className='grid grid4'>
+                        <span className='insidegrid'>FG</span>
+                        <span className='foragrid'>Fall Guys</span>
+                      </div>
+                    </Linka>
+                    <Linka to={'/firstportfolio'}>
+                      <div className='grid grid5'>
+                        <span className='insidegrid'>PA</span>
+                        <span className='foragrid'>Portfolio Antigo</span>
+                      </div>
+                    </Linka>
                     <div className='grid grid6'>
                       <span className='insidegrid'>+8</span>
 
@@ -361,6 +309,7 @@ function App() {
                   <div className='pointdivsab2'>
                     <img src={qt6} alt='' />
                   </div>
+
                 </div>
               </div>
 
