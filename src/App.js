@@ -13,6 +13,8 @@ import javascript from './images/javascript.svg'
 import linkedin from './images/linkedin-svg.svg'
 import facebook from './images/icon-facebook.svg'
 import github from './images/icon-github.svg'
+import emailjs from '@emailjs/browser'
+import deletar from './images/delete.svg'
 import { HashLink as Link } from 'react-router-hash-link'
 import { Link as Linka } from 'react-router-dom'
 
@@ -32,7 +34,6 @@ const App = () => {
 
 
   useEffect(() => {
-    console.log('ok')
     digitacao2()
     scrollmenu()
   }, [])
@@ -105,6 +106,7 @@ const App = () => {
     const msgi = document.querySelector('.mensageminput')
     const butaum = document.querySelector('.butaum')
     const msgform = document.querySelector('.msgform')
+
     if (emailis.checkValidity() && condicao) {
       emailis.classList.remove('err0r')
       emailis.classList.add('sucess')
@@ -127,24 +129,53 @@ const App = () => {
       titlei.classList.remove('sucess')
       titlei.classList.add('err0r')
     }
-    if (msgi.checkValidity() && condicao4) {
+    if (msgi.checkValidity() && condicao4 && assuntoi.length >= 15) {
       msgi.classList.remove('err0r')
       msgi.classList.add('sucess')
-    } else if (msgi.checkValidity() === false && condicao4) {
+    } else if (condicao4 && assuntoi.length < 15) {
       msgi.classList.remove('sucess')
       msgi.classList.add('err0r')
     }
-    if (msgform.checkValidity() && condicao && condicao2 && condicao3 & condicao4) {
+    if (msgform.checkValidity() && condicao && condicao2 && condicao3 & condicao4 && assuntoi.length >= 15) {
       butaum.classList.remove('err0r')
       butaum.classList.add('sucess', 'btnv')
     } else if ((msgform.checkValidity() === false && condicao) || condicao2 || condicao3 || condicao4) {
       butaum.classList.remove('sucess', 'btnv')
       butaum.classList.add('err0r')
+      return
     }
   }, [assuntoi, condicao, condicao2, condicao3, condicao4, emaili, nomei.length, titulo.length])
 
   function submitado(e) {
     e.preventDefault()
+    if (assuntoi.length < 15) {
+      alert('A mensagem tem que ter 15 ou mais caracteres.')
+      return
+    } else {
+      const templeteParams = {
+        from_name: nomei,
+        message: assuntoi,
+        email: emaili,
+        title_message: titulo
+      }
+
+      // emailjs.send('service_j294swc',
+      //   'template_payed8r', templeteParams, 'FDb2tJsOx4XRX444P').then((response) => {
+      //     console.log('email Enviado', response.status, response.text)
+      //     setNomei('')
+      //     setEmaili('')
+      //     setAssuntoI('')
+      //     setTitulo('')
+      //   }, (err) => {
+      //     console.log('failed', err)
+      //   })
+      const blackscreenp = document.querySelector('.blackscreenp')
+      const sucessbox = document.querySelector('.sucessbox')
+      sucessbox.classList.add('blockscreenp1')
+      blackscreenp.classList.add('blockscreenp')
+      document.body.style.overflow = 'hidden'
+    }
+
   }
 
   useEffect(() => {
@@ -164,11 +195,54 @@ const App = () => {
     }
 
   }
+  function blackscreenfechar() {
+    const blackscreenp = document.querySelector('.blackscreenp')
+    const sucessbox = document.querySelector('.sucessbox')
+    // const luckydiv = document.querySelector('.divlucky')
+    blackscreenp.classList.remove('blockscreenp')
+    sucessbox.classList.remove('blockscreenp1')
+    // luckydiv.classList.remove('divluckyf')
 
+    document.body.style.overflow = 'initial'
+  }
+  // function tentarsorte() {
+  //   const blackscreenp = document.querySelector('.blackscreenp')
+  //   const luckydiv = document.querySelector('.divlucky')
+  //   blackscreenp.classList.add('blockscreenp')
+  //   luckydiv.classList.add('divluckyf')
+  //   document.body.style.overflow = 'hidden'
+
+
+  // }
 
   return (
     <>
+      <div className='blackscreenp'></div>
+      <div className='sucessbox'>
+        <div className='sucessboxflex'>
+          <div class="success-animation">
+            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" /><path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" /></svg>
+          </div>
+          <div className='divparagraphe'>
+            <p className='paragraphmsgemail'>Mensagem enviada com sucesso! Obrigado pela mensagem, tentarei responder ao seu email o  mais rápido possivel!! {':)'}</p>
+          </div>
+          <img src={deletar} className='fecharsvg' onClick={blackscreenfechar} alt='' />
+
+        </div>
+
+      </div>
+
       <div className="maincontainer">
+        {/* <div className='divlucky'>
+          <div className='flexdivlucky'>
+            <div className='divh6l'>
+              <h6 className='loadinglucky'>Testando sua sorte!!</h6>
+              <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+              <img src={deletar} className='fecharsvg' onClick={blackscreenfechar} alt='' />
+              <span className='spansorte'>Sua sorte é: <span className='spanlaranja'>5</span> de 10</span>
+            </div>
+          </div>
+        </div> */}
         <header className='header darker'>
           <div className='headerwidth'>
             <div className='desktopm'>
@@ -205,9 +279,6 @@ const App = () => {
 
         </header>
 
-
-
-
         <div className='mainflexc'>
           <div className="container">
 
@@ -218,7 +289,7 @@ const App = () => {
           <span className='spanmainflex'>Me chamo <span className='spanmaked'>Samyr Marjoub</span>, seja bem vindo(a) ao meu portofolio!</span>
           <div className='groupdivb' >
             <Link to={'#projetos'} smooth={true}>  <button className="button-74"> Ver projetos! </button></Link>
-            <button className="button-74" style={{ marginRight: '0px' }}>Tente a sorte!</button>
+            <button className="button-74" style={{ marginRight: '0px' }} >Tente a sorte!</button>
 
 
           </div>
@@ -237,7 +308,7 @@ const App = () => {
                 <img src={qt6} alt='' />
               </div>
               <div className='filterdiv firstfilterdiv'>
-                <label for="check">
+                <label htmlFor="check">
                   <input type="checkbox" id="check" />
                   <span></span>
                   <span></span>
@@ -249,7 +320,7 @@ const App = () => {
                   <img src={qt6} alt='' />
                 </div>
                 <div className='filterdiv secondfilterdiv'>
-                  <label for="check2">
+                  <label htmlFor="check2">
                     <input type="checkbox" id="check2" />
                     <span></span>
                     <span></span>
@@ -300,6 +371,7 @@ const App = () => {
                         <span className='foragrid'>Portfolio Antigo</span>
                       </div>
                     </Linka>
+
                     <div className='grid grid6'>
                       <span className='insidegrid'>+8</span>
 
@@ -316,10 +388,10 @@ const App = () => {
             </div>
             <div className='fulsec2'>
               <div className='fulsec2container'>
-                <h5>Cyber Punk</h5>
-                <p className='paragraphfulsec2'>Lorem impsum dolor sit amet, consectetur adispiscing elit,sed do eisumod tempor incididunt.</p>
+                <h5>Ideais e Projetos</h5>
+                <p className='paragraphfulsec2'>Nesta seção, vou deixar um pouco de como pretendo continuar na área de TI, seja a curto prazo ou a longo prazo. Ideias, projetos e etc.</p>
                 <div className='headerfulsec2'>
-                  <span className='todayspan'>Today</span>
+                  <span className='todayspan'>Objetivos</span>
                   <img src={tresp} className='tresp' alt='' />
                 </div>
                 <div className='columnscontainer'>
@@ -330,11 +402,11 @@ const App = () => {
                       </div>
                     </div>
                     <div className='columnf2'>
-                      <p>Criar uma página inicial para o site</p>
+                      <p>Estudar HTML</p>
                     </div>
                     <div className='columnf3'>
                       <div className='statusdiv green'>
-                        <span className='spangreen'>Aprovado</span>
+                        <span className='spangreen'>Feito!</span>
                       </div>
                     </div>
 
@@ -348,7 +420,63 @@ const App = () => {
 
                     </div>
                     <div className='columnf2'>
-                      <p>Começar a segunda parte do site</p>
+                      <p>Estudar CSS</p>
+
+                    </div>
+                    <div className='columnf3'>
+                      <div className='statusdiv green'>
+                        <span className='spangreen'>Feito!</span>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div className='columndivmain'>
+                    <div className='columnf1'>
+                      <div className='bolacheck'>
+                        <img src={check} alt='' />
+
+                      </div>
+
+                    </div>
+                    <div className='columnf2'>
+                      <p>Começar no Javascript</p>
+
+                    </div>
+                    <div className='columnf3'>
+                      <div className='statusdiv green'>
+                        <span className='spangreen'>Feito!</span>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div className='columndivmain'>
+                    <div className='columnf1'>
+                      <div className='bolacheck'>
+                        <img src={check} alt='' />
+
+                      </div>
+
+                    </div>
+                    <div className='columnf2'>
+                      <p>Começar no ReactJS</p>
+
+                    </div>
+                    <div className='columnf3'>
+                      <div className='statusdiv green'>
+                        <span className='spangreen'>Feito!</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className='columndivmain'>
+                    <div className='columnf1'>
+                      <div className='bolacheck'>
+                        <img src={check} alt='' />
+
+                      </div>
+
+                    </div>
+                    <div className='columnf2'>
+                      <p>Fazer projetos com NodeJS</p>
 
                     </div>
                     <div className='columnf3'>
@@ -356,84 +484,28 @@ const App = () => {
                         <span className='spanblue'>Em curso</span>
                       </div>
                     </div>
-
                   </div>
                   <div className='columndivmain'>
                     <div className='columnf1'>
-                      <div className='bolacheck'>
-                        <img src={check} alt='' />
+                      <div className='bolacheckn'>
 
                       </div>
 
                     </div>
                     <div className='columnf2'>
-                      <p>Colocar imagens e consertar CSS</p>
-
-                    </div>
-                    <div className='columnf3'>
-                      <div className='statusdiv blue'>
-                        <span className='spanblue'>Em curso</span>
-                      </div>
-                    </div>
-
-                  </div>
-                  <div className='columndivmain'>
-                    <div className='columnf1'>
-                      <div className='bolacheck'>
-                        <img src={check} alt='' />
-
-                      </div>
-
-                    </div>
-                    <div className='columnf2'>
-                      <p>Construção do footer da página</p>
-
-                    </div>
-                    <div className='columnf3'>
-                      <div className='statusdiv blue'>
-                        <span className='spanblue'>Em curso</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className='columndivmain'>
-                    <div className='columnf1'>
-                      <div className='bolacheck'>
-                        <img src={check} alt='' />
-
-                      </div>
-
-                    </div>
-                    <div className='columnf2'>
-                      <p>Lorem ipsum dolor sit amet,consectetur.</p>
+                      <p>Melhorar em UI/UX </p>
 
                     </div>
                     <div className='columnf3'>
                       <div className='statusdiv laranja'>
-                        <span className='spanorange'>Em revisão</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className='columndivmain'>
-                    <div className='columnf1'>
-                      <div className='bolacheckn'>
-
-                      </div>
-
-                    </div>
-                    <div className='columnf2'>
-                      <p>Lorem ipsum dolor sit amet, consectetur. </p>
-
-                    </div>
-                    <div className='columnf3'>
-                      <div className='statusdiv cinza'>
-                        <span className='spancinza'>Em espera</span>
+                        <span className='spanorange'>Em Revisão</span>
                       </div>
                     </div>
                   </div>
 
                 </div>
                 <div className='headerfulsec2'>
-                  <span className='todayspan'>Upcoming</span>
+                  <span className='todayspan'>Em Breve</span>
                   <img src={tresp} className='tresp' alt='' />
 
                 </div>
@@ -446,7 +518,7 @@ const App = () => {
 
                     </div>
                     <div className='columnf2'>
-                      <p>Lorem ipsum dolor sit amet, elit. </p>
+                      <p>Python para Machine Learning e IA</p>
 
                     </div>
                     <div className='columnf3'>
@@ -463,7 +535,7 @@ const App = () => {
 
                     </div>
                     <div className='columnf2'>
-                      <p>Lorem ipsum dolor sit amet,elit. </p>
+                      <p>CyberSecurity: Web Hacking </p>
 
                     </div>
                     <div className='columnf3'>
@@ -480,7 +552,7 @@ const App = () => {
 
                     </div>
                     <div className='columnf2'>
-                      <p>Lorem ipsum dolor sit amet,elit. </p>
+                      <p>SQL (Não relacionado) </p>
 
                     </div>
                     <div className='columnf3'>
@@ -589,18 +661,17 @@ const App = () => {
           <div className='containerformf'>
             <form className='msgform' onSubmit={submitado}>
               <div className='tworowsform'>
-                <input required type={'text'} className='nomeinput marginrito' maxLength={30} minLength={3} onInput={() => { setCondicao2(true) }} onChange={(e) => { setNomei(e.target.value) }} placeholder='Nome' />
-                <input required type={'email'} className='emailinput' onInput={() => { setCondicao(true) }} onChange={(e) => { setEmaili(e.target.value) }} placeholder='Email' />
+                <input required type={'text'} className='nomeinput marginrito' value={nomei} maxLength={30} minLength={3} onInput={() => { setCondicao2(true) }} onChange={(e) => { setNomei(e.target.value) }} placeholder='Nome' />
+                <input required type={'email'} className='emailinput' value={emaili} onInput={() => { setCondicao(true) }} onChange={(e) => { setEmaili(e.target.value) }} placeholder='Email' />
               </div>
               <div className='onerowform'>
-                <input required type={'text'} className='assuntoinput' maxLength={50} minLength={10} onInput={() => { setCondicao3(true) }} onChange={(e) => { setTitulo(e.target.value) }} placeholder='Assunto' />
+                <input required type={'text'} className='assuntoinput' value={titulo} maxLength={50} minLength={10} onInput={() => { setCondicao3(true) }} onChange={(e) => { setTitulo(e.target.value) }} placeholder='Assunto' />
               </div>
               <div className='onerowform'>
-                <textarea required placeholder='Mensagem' className='mensageminput' maxLength={300} minLength={15} onInput={() => { setCondicao4(true) }} onChange={(e) => { setAssuntoI(e.target.value) }} />
+                <textarea required placeholder='Mensagem' value={assuntoi} className='mensageminput' maxLength={300} minLength={15} onInput={() => { setCondicao4(true) }} onChange={(e) => { setAssuntoI(e.target.value) }} />
               </div>
               <div className='onebuttonform'>
                 <input type={'submit'} className='butaum' />
-
               </div>
             </form>
           </div>
@@ -612,10 +683,15 @@ const App = () => {
               <h4>@Samyr Marjoub - 2022</h4>
             </div>
             <div className='footer2'>
-              <div className='quadradocontainer'> <img src={linkedin} alt='' /> </div>
-              <div className='quadradocontainer'> <img src={facebook} alt='' /></div>
-              <div className='quadradocontainer quadradocontainerl'> <img src={github} alt='' /></div>
-
+              <a href='https://www.linkedin.com/in/samyr-marjoub-388a7b222/'>
+                <div className='quadradocontainer'> <img src={linkedin} alt='' /> </div>
+              </a>
+              <a href='https://www.facebook.com/samir.marjoub/'>
+                <div className='quadradocontainer'> <img src={facebook} alt='' /></div>
+              </a>
+              <a href='https://github.com/SamyrMarjoub'>
+                <div className='quadradocontainer quadradocontainerl'> <img src={github} alt='' /></div>
+              </a>
             </div>
           </div>
         </div>
