@@ -13,6 +13,10 @@ import javascript from './images/javascript.svg'
 import linkedin from './images/linkedin-svg.svg'
 import facebook from './images/icon-facebook.svg'
 import github from './images/icon-github.svg'
+import feliz from './images/feliz.svg'
+import muitofeliz from './images/muitofeliz.svg'
+import mediano from './images/mediano.svg'
+import triste from './images/triste.svg'
 import emailjs from '@emailjs/browser'
 import deletar from './images/delete.svg'
 import { HashLink as Link } from 'react-router-hash-link'
@@ -31,6 +35,7 @@ const App = () => {
   const [condicao3, setCondicao3] = useState(false)
   const [condicao4, setCondicao4] = useState(false)
   const [letOpen, setOpen] = useState(false)
+  const [sorte, setSorte] = useState(false)
 
 
   useEffect(() => {
@@ -159,16 +164,16 @@ const App = () => {
         title_message: titulo
       }
 
-      // emailjs.send('service_j294swc',
-      //   'template_payed8r', templeteParams, 'FDb2tJsOx4XRX444P').then((response) => {
-      //     console.log('email Enviado', response.status, response.text)
-      //     setNomei('')
-      //     setEmaili('')
-      //     setAssuntoI('')
-      //     setTitulo('')
-      //   }, (err) => {
-      //     console.log('failed', err)
-      //   })
+      emailjs.send('service_j294swc',
+        'template_payed8r', templeteParams, 'FDb2tJsOx4XRX444P').then((response) => {
+          console.log('email Enviado', response.status, response.text)
+          setNomei('')
+          setEmaili('')
+          setAssuntoI('')
+          setTitulo('')
+        }, (err) => {
+          console.log('failed', err)
+        })
       const blackscreenp = document.querySelector('.blackscreenp')
       const sucessbox = document.querySelector('.sucessbox')
       sucessbox.classList.add('blockscreenp1')
@@ -198,31 +203,79 @@ const App = () => {
   function blackscreenfechar() {
     const blackscreenp = document.querySelector('.blackscreenp')
     const sucessbox = document.querySelector('.sucessbox')
-    // const luckydiv = document.querySelector('.divlucky')
+    const luckydiv = document.querySelector('.divlucky')
     blackscreenp.classList.remove('blockscreenp')
     sucessbox.classList.remove('blockscreenp1')
-    // luckydiv.classList.remove('divluckyf')
+    luckydiv.classList.remove('divluckyf')
 
     document.body.style.overflow = 'initial'
   }
-  // function tentarsorte() {
-  //   const blackscreenp = document.querySelector('.blackscreenp')
-  //   const luckydiv = document.querySelector('.divlucky')
-  //   blackscreenp.classList.add('blockscreenp')
-  //   luckydiv.classList.add('divluckyf')
-  //   document.body.style.overflow = 'hidden'
+  function tentarsorte() {
+    const blackscreenp = document.querySelector('.blackscreenp')
+    const luckydiv = document.querySelector('.divlucky')
+    const sucessanimation = document.querySelector('.success-animation')
+    let rndInt = Math.floor(Math.random() * 10) + 1
+    const txtsorte = document.querySelector('.textsorte')
+    const txtnumsorte = document.querySelector('.spansorte')
+    const lgds = document.querySelector('.lds-ring')
+    const imgface = document.querySelector('.imgface')
+    if (window.innerWidth < 360) {
+      return
+    }
+    blackscreenp.classList.add('blockscreenp')
+    luckydiv.classList.add('divluckyf')
+    document.body.style.overflow = 'hidden'
+    rndInt = 10
+    if (sorte === false) {
+      setTimeout(() => {
+        sucessanimation.classList.add('noneloading')
+        lgds.style.display = 'none'
+        imgface.style.display = 'block'
+        if (rndInt === 1 || rndInt === 2 || rndInt === 3) {
+          txtsorte.innerHTML = 'Parece que sua sorte ta bem mal em... recomendo não sair de casa hoje e não se arriscar muito, certo?'
+          imgface.src = triste
+          imgface.classList.add('svgtriste')
+          txtnumsorte.innerHTML = `Sua sorte é: <span class='spanred'>${rndInt}</span> de 10`
+
+        } else if (rndInt === 4 || rndInt === 5 || rndInt === 6) {
+          txtsorte.innerHTML = 'Bem sua sorte esta ruim mas podia estar pior... recomendo não fazer apostar em jogos de azar hoje e nem comprar bitcoin.'
+          imgface.src = mediano
+          imgface.classList.add('svgmediano')
+          txtnumsorte.innerHTML = `Sua sorte é: <span class='spanlaranja'>${rndInt}</span> de 10`
+
+        } else if (rndInt === 7 || rndInt === 8 || rndInt === 9) {
+          txtsorte.innerHTML = 'Amigo sua sorte é boa, mas podia estar melhor... aproveite o dia, eu tenho certeza que você vai gostar do agora.'
+          imgface.src = feliz
+          imgface.classList.add('svgfeliz')
+          txtnumsorte.innerHTML = `Sua sorte é: <span class='spanfeliz'>${rndInt}</span> de 10`
+
+        } else if (rndInt === 10) {
+          txtsorte.innerHTML = 'Uau, você tirou a sorte GRANDE, meus parabens!! eu fortemente recomendo fazer aquilo que você estava deixando de lado e aproveitar o dia, pois dias como esses são bem raros.'
+          imgface.src = muitofeliz
+          imgface.classList.add('svgmuitofeliz')
+          txtnumsorte.innerHTML = `Sua sorte é: <span class='spanmuitofeliz'>${rndInt}</span> de 10`
+
+        }
+
+      }, 3000)
+    } else {
+      return
+    }
+    setSorte(true)
 
 
-  // }
+
+  }
 
   return (
     <>
       <div className='blackscreenp'></div>
       <div className='sucessbox'>
         <div className='sucessboxflex'>
-          <div class="success-animation">
-            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" /><path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" /></svg>
+          <div className="success-animation">
+            <svg className="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" /><path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" /></svg>
           </div>
+
           <div className='divparagraphe'>
             <p className='paragraphmsgemail'>Mensagem enviada com sucesso! Obrigado pela mensagem, tentarei responder ao seu email o  mais rápido possivel!! {':)'}</p>
           </div>
@@ -231,18 +284,23 @@ const App = () => {
         </div>
 
       </div>
-
+    
       <div className="maincontainer">
-        {/* <div className='divlucky'>
+        <div className='divlucky'>
           <div className='flexdivlucky'>
             <div className='divh6l'>
               <h6 className='loadinglucky'>Testando sua sorte!!</h6>
-              <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+              <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
+              <div className='divface'>
+                <img src={''} alt='' className='imgface' />
+              </div>
               <img src={deletar} className='fecharsvg' onClick={blackscreenfechar} alt='' />
-              <span className='spansorte'>Sua sorte é: <span className='spanlaranja'>5</span> de 10</span>
+              <span className='spansorte'></span>
+              <span className='textsorte'></span>
+
             </div>
           </div>
-        </div> */}
+        </div>
         <header className='header darker'>
           <div className='headerwidth'>
             <div className='desktopm'>
@@ -289,7 +347,7 @@ const App = () => {
           <span className='spanmainflex'>Me chamo <span className='spanmaked'>Samyr Marjoub</span>, seja bem vindo(a) ao meu portofolio!</span>
           <div className='groupdivb' >
             <Link to={'#projetos'} smooth={true}>  <button className="button-74"> Ver projetos! </button></Link>
-            <button className="button-74" style={{ marginRight: '0px' }} >Tente a sorte!</button>
+            <button className="button-74" style={{ marginRight: '0px' }} onClick={tentarsorte} >Tente a sorte!</button>
 
 
           </div>
@@ -333,7 +391,7 @@ const App = () => {
                 </div>
                 <div className='inputdiv'>
                   <img src={search} alt='' />
-                  <input type={'search'} placeholder='Pesquise por projetos...' />
+                  <input type={'search'} disabled={true} className='projectsinput' placeholder='Pesquise por projetos...' />
                 </div>
                 <div className='projectsdiv'>
                   <div className='titleproject'>
@@ -373,7 +431,7 @@ const App = () => {
                     </Linka>
 
                     <div className='grid grid6'>
-                      <span className='insidegrid'>+8</span>
+                      <span className='insidegrid' onClick={() => { alert('Em Breve') }}>+7</span>
 
                     </div>
 
